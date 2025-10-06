@@ -25,12 +25,19 @@
   <h1>Archit Dubey</h1>
   <p>Content Creator & Workflow Expert</p>
   <canvas id="riveCanvas" width="800" height="600"></canvas>
-  <script>
-    new rive.Rive({
-      src: "hero_ui_animation.riv",
-      canvas: document.getElementById("riveCanvas"),
-      autoplay: true,
-    });
-  </script>
+<script>
+  const riveInstance = new rive.Rive({
+    src: "hero_ui_animation.riv",
+    canvas: document.getElementById("riveCanvas"),
+    stateMachines: ["State Machine 1"], // 👈 name must match your Rive file
+    autoplay: true,
+  });
+
+  // Optional example: click to restart or trigger animation
+  document.getElementById("riveCanvas").addEventListener("click", () => {
+    riveInstance.play("State Machine 1");
+  });
+</script>
+
 </body>
 </html>

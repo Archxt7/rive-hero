@@ -14,30 +14,42 @@
       justify-content: center;
       height: 100vh;
       color: white;
-      font-family: sans-serif;
+      font-family: "Poppins", sans-serif;
     }
-    h1 { font-size: 48px; margin-bottom: 8px; }
-    p { font-size: 18px; margin-top: 0; opacity: 0.8; }
-    canvas { width: 80%; max-width: 900px; border-radius: 16px; }
+    h1 { font-size: 56px; margin-bottom: 8px; }
+    p { font-size: 20px; margin-top: 0; opacity: 0.8; }
+    canvas { width: 80%; max-width: 900px; border-radius: 16px; margin-top: 24px; }
   </style>
 </head>
 <body>
   <h1>Archit Dubey</h1>
   <p>Content Creator & Workflow Expert</p>
+
   <canvas id="riveCanvas" width="800" height="600"></canvas>
-<script>
-  const riveInstance = new rive.Rive({
-    src: "hero_ui_animation.riv",
-    canvas: document.getElementById("riveCanvas"),
-    stateMachines: ["State Machine 1"], // 👈 name must match your Rive file
-    autoplay: true,
-  });
 
-  // Optional example: click to restart or trigger animation
-  document.getElementById("riveCanvas").addEventListener("click", () => {
-    riveInstance.play("State Machine 1");
-  });
-</script>
+  <script>
+    // Load the Rive animation with the correct state machine
+    const canvas = document.getElementById("riveCanvas");
 
+    const riveInstance = new rive.Rive({
+      src: "hero_ui_animation.riv",
+      canvas: canvas,
+      stateMachines: ["State Machine 1"], // Must match the name in your Rive file
+      autoplay: true,
+    });
+
+    // Optional hover and click interactions
+    canvas.addEventListener("mouseenter", () => {
+      riveInstance.play("State Machine 1");
+    });
+
+    canvas.addEventListener("mouseleave", () => {
+      riveInstance.pause("State Machine 1");
+    });
+
+    canvas.addEventListener("click", () => {
+      riveInstance.play("State Machine 1");
+    });
+  </script>
 </body>
 </html>

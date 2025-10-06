@@ -10,7 +10,7 @@
       padding: 0;
       height: 100%;
       width: 100%;
-      overflow: hidden; /* removes scrollbars */
+      overflow: hidden;
       background: #0d0d0d;
     }
     canvas {
@@ -19,6 +19,7 @@
       left: 0;
       width: 100vw;
       height: 100vh;
+      display: block;
     }
   </style>
 </head>
@@ -26,29 +27,31 @@
   <canvas id="riveCanvas"></canvas>
 
   <script>
-    // Load full-screen interactive Rive animation
     const canvas = document.getElementById("riveCanvas");
 
+    // Ensure high-resolution rendering (fixes blur)
+    function resizeCanvas() {
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
+      canvas.getContext('2d').scale(dpr, dpr);
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    // Load Rive animation full screen
     const riveInstance = new rive.Rive({
       src: "hero_ui_animation.riv",
       canvas: canvas,
       stateMachines: ["State Machine 1"],
       autoplay: true,
-      fit: rive.Fit.cover, // makes it fill the entire screen
+      fit: rive.Fit.cover, // fills screen nicely
     });
 
-    // Optional interactivity (hover or click)
-    canvas.addEventListener("mouseenter", () => {
-      riveInstance.play("State Machine 1");
-    });
-
-    canvas.addEventListener("mouseleave", () => {
-      riveInstance.pause("State Machine 1");
-    });
-
-    canvas.addEventListener("click", () => {
-      riveInstance.play("State Machine 1");
-    });
+    // Optional hover and click interactivity
+    canvas.addEventListener("mouseenter", () => riveInstance.play("State Machine 1"));
+    canvas.addEventListener("mouseleave", () => riveInstance.pause("State Machine 1"));
+    canvas.addEventListener("click", () => riveInstance.play("State Machine 1"));
   </script>
 </body>
 </html>

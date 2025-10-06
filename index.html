@@ -15,10 +15,11 @@
     }
     canvas {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 120vw;   /* 👈 slightly zoomed out to fill edges nicely */
+      height: 120vh;
       display: block;
     }
   </style>
@@ -29,7 +30,7 @@
   <script>
     const canvas = document.getElementById("riveCanvas");
 
-    // High-resolution fix (for retina displays)
+    // Keep high resolution
     function resizeCanvas() {
       const dpr = window.devicePixelRatio || 1;
       canvas.width = window.innerWidth * dpr;
@@ -39,19 +40,15 @@
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
-    // Load Rive animation with better scaling (no zoom, no crop)
+    // Load your animation and center it perfectly
     const riveInstance = new rive.Rive({
       src: "hero_ui_animation.riv",
       canvas: canvas,
       stateMachines: ["State Machine 1"],
       autoplay: true,
-      fit: rive.Fit.contain,          // fits full animation
+      fit: rive.Fit.cover, // fills screen cleanly without bars
       alignment: rive.Alignment.center,
     });
-
-    // Slight zoom out to fix oversized look (≈ 80% scale)
-    canvas.style.transform = "scale(0.8)";
-    canvas.style.transformOrigin = "center center";
 
     // Optional interactivity
     canvas.addEventListener("mouseenter", () => riveInstance.play("State Machine 1"));

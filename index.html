@@ -5,40 +5,39 @@
   <title>Archit Dubey Portfolio</title>
   <script src="https://unpkg.com/@rive-app/canvas@2.16.0"></script>
   <style>
-    body {
+    html, body {
       margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      overflow: hidden; /* removes scrollbars */
       background: #0d0d0d;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      color: white;
-      font-family: "Poppins", sans-serif;
     }
-    h1 { font-size: 56px; margin-bottom: 8px; }
-    p { font-size: 20px; margin-top: 0; opacity: 0.8; }
-    canvas { width: 80%; max-width: 900px; border-radius: 16px; margin-top: 24px; }
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+    }
   </style>
 </head>
 <body>
-  <h1>Archit Dubey</h1>
-  <p>Content Creator & Workflow Expert</p>
-
-  <canvas id="riveCanvas" width="800" height="600"></canvas>
+  <canvas id="riveCanvas"></canvas>
 
   <script>
-    // Load the Rive animation with the correct state machine
+    // Load full-screen interactive Rive animation
     const canvas = document.getElementById("riveCanvas");
 
     const riveInstance = new rive.Rive({
       src: "hero_ui_animation.riv",
       canvas: canvas,
-      stateMachines: ["State Machine 1"], // Must match the name in your Rive file
+      stateMachines: ["State Machine 1"],
       autoplay: true,
+      fit: rive.Fit.cover, // makes it fill the entire screen
     });
 
-    // Optional hover and click interactions
+    // Optional interactivity (hover or click)
     canvas.addEventListener("mouseenter", () => {
       riveInstance.play("State Machine 1");
     });

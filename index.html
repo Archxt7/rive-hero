@@ -29,7 +29,7 @@
   <script>
     const canvas = document.getElementById("riveCanvas");
 
-    // Ensure high-resolution rendering (fixes blur)
+    // High-resolution fix for crisp display
     function resizeCanvas() {
       const dpr = window.devicePixelRatio || 1;
       canvas.width = window.innerWidth * dpr;
@@ -39,16 +39,17 @@
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
-    // Load Rive animation full screen
+    // Load Rive animation full screen (fit without zoom)
     const riveInstance = new rive.Rive({
       src: "hero_ui_animation.riv",
       canvas: canvas,
       stateMachines: ["State Machine 1"],
       autoplay: true,
-      fit: rive.Fit.cover, // fills screen nicely
+      fit: rive.Fit.contain, // 👈 changed from cover → contain
+      alignment: rive.Alignment.center,
     });
 
-    // Optional hover and click interactivity
+    // Optional interactions
     canvas.addEventListener("mouseenter", () => riveInstance.play("State Machine 1"));
     canvas.addEventListener("mouseleave", () => riveInstance.pause("State Machine 1"));
     canvas.addEventListener("click", () => riveInstance.play("State Machine 1"));

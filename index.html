@@ -1,25 +1,23 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   <title>Archit Dubey Portfolio</title>
   <script src="https://unpkg.com/@rive-app/canvas@2.16.0"></script>
   <style>
     html, body {
       margin: 0;
-      padding: 0;
       height: 100%;
       width: 100%;
       overflow: hidden;
       background: #0d0d0d;
     }
-    canvas {
+    /* Fullscreen canvas */
+    #riveCanvas {
       position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 120vw;   /* 👈 slightly zoomed out to fill edges nicely */
-      height: 120vh;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
       display: block;
     }
   </style>
@@ -30,30 +28,34 @@
   <script>
     const canvas = document.getElementById("riveCanvas");
 
-    // Keep high resolution
-    function resizeCanvas() {
-      const dpr = window.devicePixelRatio || 1;
-      canvas.width = window.innerWidth * dpr;
-      canvas.height = window.innerHeight * dpr;
-      canvas.getContext('2d').scale(dpr, dpr);
+    // Let Rive manage resolution; just keep canvas sized to its CSS box
+    function resize() {
+      // Match drawing surface to the CSS size (no manual ctx.scale!)
+      canvas.width  = canvas.clientWidth  * (window.devicePixelRatio || 1);
+      canvas.height = canvas.clientHeight * (window.devicePixelRatio || 1);
+      if (riveInstance) riveInstance.resizeDrawingSurfaceToCanvas();
     }
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
 
-    // Load your animation and center it perfectly
+    // Create Rive with proper layout (no crop)
     const riveInstance = new rive.Rive({
       src: "hero_ui_animation.riv",
-      canvas: canvas,
+      canvas,
       stateMachines: ["State Machine 1"],
       autoplay: true,
-      fit: rive.Fit.cover, // fills screen cleanly without bars
-      alignment: rive.Alignment.center,
+      layout: new rive.Layout({
+        fit: rive.Fit.CONTAIN,          // shows the whole artboard without zoom/crop
+        alignment: rive.Alignment.CENTER
+      }),
     });
 
-    // Optional interactivity
+    // Interactions (optional)
     canvas.addEventListener("mouseenter", () => riveInstance.play("State Machine 1"));
     canvas.addEventListener("mouseleave", () => riveInstance.pause("State Machine 1"));
-    canvas.addEventListener("click", () => riveInstance.play("State Machine 1"));
+    canvas.addEventListener("click",      () => riveInstance.play("State Machine 1"));
+
+    // Initial and responsive sizing
+    window.addEventListener("resize", resize);
+    resize();
   </script>
 </body>
 </html>
